@@ -1,0 +1,25 @@
+* mu4e folding
+
+[[file:mu4e-folding.el][mu4e-folding.el]] is a minor mode to enable threads folding in [[https://www.djcbsoftware.nl/code/mu/][mu4e]].
+It works by using overlays with an invisible property and setting
+hooks at the right place. It is possible to configure colors to
+better highlight a thread. Note that when a thread is folded, any
+unread child remains visible. Compared to [[https://github.com/rougier/mu4e-thread-folding][mu4e-thread-folding]], this
+mode shoudl be much faster (less compuation overall).
+
+Internally, the library works by creating overlay for each thread:
+
+- mu4e-folding-root: overlay for the root of the thread
+- mu4e-folding-all-children: overlay for all the thread children
+- mu4e-folding-read-children: overlay for all the read children
+
+Children have two overlays such that we can hide the read children
+while keeping the unread visible: when a thread is folded, unread
+children stay visible
+
+Default keybinding are:
+  - `tab` for toggling fold status of a single thread
+  - `shift-tab` for toggling fold status of all threads
+
+Customization is accessible from the `mu4e-folding` group
+
