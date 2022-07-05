@@ -79,12 +79,17 @@
   "Get message at point in mu4e headers mode"
   (get-text-property (point) 'msg))
 
+(defun mu4e-folding--get-thread (msg)
+  (when msg
+    (if (version< mu4e-mu-version "1.8.0")
+        (mu4e-message-field msg :thread)
+      (mu4e-message-field msg :meta))))
 
 (defun mu4e-folding--goto-root ()
   "Go to the root of the thread if message at point is part of a thread"
 
   (let* ((msg       (mu4e-folding--message-at-point))
-         (thread    (if msg (mu4e-message-field msg :thread)))
+         (thread    (mu4e-folding--get-thread msg))
          (orphan    (if thread (plist-get thread :orphan)))
          (root      (if thread (plist-get thread :root))))
     (when (and thread (not root) (not orphan) (not (bobp)))
@@ -95,7 +100,7 @@
 (defun mu4e-folding--is-root ()
   "Check if message at point is the root of a thread"
   (let* ((msg       (mu4e-folding--message-at-point))
-         (thread    (if msg (mu4e-message-field msg :thread)))
+         (thread    (mu4e-folding--get-thread msg))
          (has-child (if thread (plist-get thread :has-child)))
          (orphan    (if thread (plist-get thread :orphan)))
          (root      (if thread (plist-get thread :root))))
@@ -105,7 +110,7 @@
 (defun mu4e-folding--is-child ()
   "Check if message at point is a child in a thread"
   (let* ((msg       (mu4e-folding--message-at-point))
-         (thread    (if msg (mu4e-message-field msg :thread)))
+         (thread    (mu4e-folding--get-thread msg))
          (root      (if thread (plist-get thread :root))))
     (and thread (not root))))
 
