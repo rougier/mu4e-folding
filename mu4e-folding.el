@@ -230,6 +230,7 @@
             (let ((overlay all-children-overlay))
               (overlay-put overlay 'face 'mu4e-folding-child-folded-face) 
               (overlay-put overlay 'priority -200)
+              (overlay-put overlay 'mu4e-folding-children-count count)
               (overlay-put overlay 'mu4e-folding-all-children t)
               (overlay-put overlay 'mu4e-folding-all-children-overlay overlay))
           
